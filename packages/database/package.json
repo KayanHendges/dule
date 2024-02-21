@@ -1,0 +1,19 @@
+{
+  "name": "database",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "db:build": "rimraf ./dist && tsc",
+    "db:generate": "prisma generate",
+    "db:push": "dotenv -e ../../.env prisma db push"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.10.1",
+    "rimraf": "^5.0.1"
+  }
+}
