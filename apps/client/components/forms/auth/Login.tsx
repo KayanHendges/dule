@@ -9,7 +9,7 @@ import { handleSubmit } from "@/utils/forms";
 import Link from "next/link";
 import { Text } from "@/components/texts/Text";
 import { z } from "zod";
-import { emailFormField } from "@/config/joiForms";
+import { emailFormField } from "@/config/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const loginSchema = z.object({

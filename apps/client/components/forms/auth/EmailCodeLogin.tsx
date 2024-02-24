@@ -5,7 +5,7 @@ import FormContainer from "@/components/forms/FormContainer";
 import { Input } from "@/components/ui/input";
 import { Heading } from "@/components/texts/Heading";
 import { Text } from "@/components/texts/Text";
-import { emailFormField } from "@/config/joiForms";
+import { emailFormField } from "@/config/form";
 import { AuthContext } from "@/contexts/Auth/AuthContext";
 import { authProvider } from "@/providers/api/auth";
 import { handleSubmit } from "@/utils/forms";
