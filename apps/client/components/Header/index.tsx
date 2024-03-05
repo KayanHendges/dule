@@ -7,7 +7,7 @@ import MobileSidebar from "../MobileSidebar";
 
 export default function Header() {
   const { header } = useContext(AppContext);
-  const headerTitle = header;
+  const headerTitle = header || window.document.title;
 
   return (
     <div

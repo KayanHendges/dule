@@ -1,16 +1,12 @@
 "use client";
 import { authProvider } from "@/providers/api/auth";
-import {
-  LoginCodeDTO,
-  LoginResponse,
-  LoginUserDTO,
-  RequestCodeDTO,
-} from "project-common";
+import { LoginCodeDTO, LoginResponse, LoginUserDTO } from "project-common";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { IAuthContext } from "./types";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { jwtDecode } from "jwt-decode";
 import { config } from "@/config/variables";
+import { useRouter } from "next/navigation";
 
 export const AuthContext = createContext({} as IAuthContext);
 
@@ -22,6 +18,8 @@ export default function AuthContextProvider({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
     undefined
   );
+
+  const router = useRouter();
 
   const signIn = async (payload: LoginUserDTO) => {
     try {
@@ -51,6 +49,8 @@ export default function AuthContextProvider({
 
     setCookie(config.accessToken, accessToken, { expires });
     setIsAuthenticated(true);
+
+    router.push("/");
   };
 
   const signOut = async () => {
@@ -66,6 +66,10 @@ export default function AuthContextProvider({
   useEffect(() => {
     validateToken();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated === false) router.push("/login");
+  }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider

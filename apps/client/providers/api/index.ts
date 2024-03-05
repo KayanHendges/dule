@@ -1,6 +1,6 @@
 import { handleDates } from "@/utils/formats/date";
 import axios from "axios";
-import Router from "next/navigation";
+import { redirect } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { config } from "@/config/variables";
 
@@ -20,7 +20,7 @@ api2.interceptors.request.use((request) => {
 api2.interceptors.response.use((originalResponse) => {
   try {
     if (originalResponse.status === 401) {
-      Router.redirect("/login");
+      redirect("/login");
     }
 
     handleDates(originalResponse.data);
