@@ -1,6 +1,9 @@
 export type OrderBy = 'asc' | 'desc';
 
-export type OrderParam<T> = Record<keyof T, OrderBy>;
+type OrderParam<T extends Record<string, any>> = {
+  [K in keyof T]: T[K] extends Array<any> ? undefined : OrderBy;
+};
+
 
 export type EntityCommonOmit = "id" | "createdAt" | "updatedAt";
 

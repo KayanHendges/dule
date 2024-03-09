@@ -36,7 +36,9 @@ export type WhereParams<T> = {
 
 type OrderBy = 'asc' | 'desc';
 
-type OrderParam<T> = Record<keyof T, OrderBy>;
+type OrderParam<T extends Record<string, any>> = {
+  [K in keyof T]: T[K] extends Array<any> ? undefined : OrderBy;
+};
 
 interface Pagination {
   page: number;

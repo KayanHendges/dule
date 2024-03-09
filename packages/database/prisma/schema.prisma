@@ -20,7 +20,8 @@ model User {
   updatedAt      DateTime         @updatedAt @map("updated_at")
   createdAt      DateTime         @default(now()) @map("created_at")
   credentials    UserCredential[]
-  ValidationCode ValidationCode[]
+  validationCode ValidationCode[]
+  appointment    Appointment?
 
   @@map("users")
 }
@@ -35,6 +36,81 @@ model UserCredential {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("user_credentials")
+}
+
+model Client {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  phone       String?
+  email       String?
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  appointment Appointment[]
+
+  @@map("clients")
+}
+
+model Business {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  descriptions String?
+  users        UserBusiness[]
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  work         Work[]
+  appointment  Appointment?
+
+  @@map("business")
+}
+
+type UserBusiness {
+  userId    String           @map("user_id")
+  role      UserBusinessRole @default(employee)
+  works     String[]
+  updatedAt DateTime         @default(now()) @map("updated_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+}
+
+enum UserBusinessRole {
+  owner
+  employee
+}
+
+model Appointment {
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String            @unique @map("user_id") @db.ObjectId
+  user       User              @relation(fields: [userId], references: [id])
+  clientId   String            @unique @map("client_id") @db.ObjectId
+  client     Client            @relation(fields: [clientId], references: [id])
+  businessId String            @unique @map("business_id") @db.ObjectId
+  business   Business          @relation(fields: [businessId], references: [id])
+  works      AppointmentWork[]
+  updatedAt  DateTime          @updatedAt @map("updated_at")
+  createdAt  DateTime          @default(now()) @map("created_at")
+
+  @@map("appointments")
+}
+
+model Work {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  price       Int
+  description String?
+  businessId  String   @map("business_id") @db.ObjectId
+  business    Business @relation(fields: [businessId], references: [id])
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("works")
+}
+
+type AppointmentWork {
+  workId    String   @map("work_id")
+  userId    String   @map("user_id")
+  name      String
+  price     Int
+  updatedAt DateTime @default(now()) @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
 }
 
 model ValidationCode {
